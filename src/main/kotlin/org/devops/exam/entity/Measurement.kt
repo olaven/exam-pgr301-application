@@ -18,7 +18,7 @@ data class Measurement (
         @field:NotNull
         @field:Min(-90)
         @field:Max(90)
-        val lat: Float,
+        var lat: Float,
 
         @field:NotNull
         @field:Min(-180)
@@ -32,5 +32,5 @@ data class Measurement (
         @field:Id
         @field:GeneratedValue
         @field:NotNull
-        val id: Long? = null // set automatically when persisting
+        var id: Long? = null // set automatically when persisting
 )

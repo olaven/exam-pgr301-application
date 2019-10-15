@@ -38,36 +38,6 @@ class DeviceController(
         }
     }
 
-    @PostMapping(" /devices/{deviceId}/measurements")
-    fun postMeasurement(
-            @PathVariable("deviceId") deviceId: Long,
-            @RequestBody measurement: Measurement
-    ): ResponseEntity<Measurement> {
-
-        if (measurement.id != null || deviceId != measurement.id) {
-            return status(409).build()
-        }
-
-        val entity = deviceRepository.findById(deviceId)
-        if (!entity.isPresent) return notFound().build()
-
-        return handleConstraintViolation {
-
-            val persisted = measurementRepository.save(measurement)
-            created(URI.create("/devices/$deviceId/measurements")).body(persisted)
-        }
-    }
-
-    @GetMapping("/devices/{id}/measurements")
-    fun getMeasurements(
-            @PathVariable("id") id: Long
-    ): ResponseEntity<Iterable<Measurement>> {
-
-        if (!deviceRepository.existsById(id)) return notFound().build()
-        val measurements = measurementRepository.findByDeviceDeviceId(id)
-        return ok(measurements)
-    }
-
     @GetMapping("/devices")
     fun getDevices() = ok(deviceRepository.findAll())
 }

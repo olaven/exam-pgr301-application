@@ -12,7 +12,7 @@ class ResetDatabase(
 
     fun reset() {
 
-        deviceRepository.deleteAll()
         measurementRepository.deleteAll()
+        deviceRepository.deleteAll()
     }
 }
