@@ -5,8 +5,7 @@ deploy:
   provider: script
   script: bash docker_push.sh
   on:
-    #branch: master#TODO: ADD BACK IN, remove below
-    all_branches: true
+    branch: master
 
 env:
   global:
