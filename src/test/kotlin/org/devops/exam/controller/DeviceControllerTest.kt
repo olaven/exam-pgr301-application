@@ -2,12 +2,9 @@ package org.devops.exam.controller
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import io.restassured.internal.mapping.Jackson1Mapper
-import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Device
-import org.hamcrest.Matchers
-import org.hamcrest.Matchers.*
+import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
 internal class DeviceControllerTest: ControllerTestBase() {

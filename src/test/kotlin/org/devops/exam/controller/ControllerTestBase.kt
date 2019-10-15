@@ -2,7 +2,6 @@ package org.devops.exam.controller
 
 import com.github.javafaker.Faker
 import io.restassured.RestAssured
-import io.restassured.http.ContentType
 import org.devops.exam.App
 import org.devops.exam.entity.Device
 import org.devops.exam.entity.Measurement

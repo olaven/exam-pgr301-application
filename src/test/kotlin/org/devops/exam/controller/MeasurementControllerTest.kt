@@ -2,13 +2,10 @@ package org.devops.exam.controller
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Measurement
-import org.hamcrest.Matchers
-import org.junit.jupiter.api.Disabled
+import org.junit.jupiter.api.Test
 import kotlin.random.Random
-import kotlin.test.expect
 
 internal class MeasurementControllerTest: ControllerTestBase() {
 
