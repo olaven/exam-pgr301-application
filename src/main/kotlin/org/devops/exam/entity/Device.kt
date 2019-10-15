@@ -5,9 +5,6 @@ import org.jetbrains.annotations.NotNull
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
-import javax.persistence.OneToMany
-import javax.validation.constraints.Size
-import kotlin.math.min
 
 @Entity
 data class Device (

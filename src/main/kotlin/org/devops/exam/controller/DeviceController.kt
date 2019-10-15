@@ -1,18 +1,16 @@
 package org.devops.exam.controller
 
 import org.devops.exam.entity.Device
-import org.devops.exam.entity.Measurement
 import org.devops.exam.repository.DeviceRepository
 import org.devops.exam.repository.MeasurementRepository
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
-import org.springframework.web.bind.annotation.*
-import sun.audio.AudioDevice.device
-import java.lang.Exception
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import java.net.URI
-import javax.validation.ConstraintViolationException
-import kotlin.system.measureNanoTime
 
 @RestController
 class DeviceController(
