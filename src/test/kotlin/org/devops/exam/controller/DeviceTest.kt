@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Device
 
-internal class DeviceControllerTest: ControllerTestBase() {
+internal class DeviceTest: ControllerTestBase() {
 
     @Test
     fun `can POST devices`() {
@@ -79,6 +79,6 @@ internal class DeviceControllerTest: ControllerTestBase() {
     private fun post(device: Device) = given()
             .contentType(ContentType.JSON)
             .body(device)
-            .post("/device")
+            .post("/devices")
             .then()
 }

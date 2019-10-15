@@ -6,10 +6,7 @@ import org.devops.exam.repository.MeasurementRepository
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.lang.Exception
 import java.net.URI
 import javax.validation.ConstraintViolationException
@@ -20,7 +17,7 @@ class DeviceController(
         private val measurementRepository: MeasurementRepository
 ) {
 
-    @PostMapping("/device", produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/devices", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun postDevice(
             @RequestBody device: Device
     ): ResponseEntity<Device> {
@@ -47,8 +44,11 @@ class DeviceController(
         }
     }
 
-    @PostMapping(" /device/{deviceId}/measurement")
-    fun postMeasurement() {
+    @PostMapping(" /device/{deviceId}/measurements")
+    fun postMeasurement(
+            @PathVariable deviceId: Long
+    ) {
+        
 
     }
 
