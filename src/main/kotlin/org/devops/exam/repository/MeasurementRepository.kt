@@ -5,4 +5,7 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MeasurementRepository: CrudRepository<Measurement, Long>
+interface MeasurementRepository: CrudRepository<Measurement, Long> {
+
+    fun findByDeviceDeviceId(id: Long): Iterable<Measurement>
+}
