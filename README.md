@@ -17,6 +17,9 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
         - [ ] Sjekk at det er OK med en lokal terraformmodul
 - [ ] Travis 
 - [ ] Oppgave 2 - Pipeline
+    - [X] Du skal skrive en Dockerfil som kan brukes for å bygge et Container Image av Spring Boot applikasjonen din.
+    - [ ] Du skal utvide pipeline, til å bygge et Docker image fra Docker filen
+    - [ ] Docker image skal lastes opp til Docker Hub
 - [ ] Oppgave 3 - Pipeline
 - [ ] Oppgave 4 - Pipeline
 
