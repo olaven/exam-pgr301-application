@@ -2,6 +2,7 @@ package org.devops.exam.controller
 
 import com.github.javafaker.Faker
 import io.restassured.RestAssured
+import io.restassured.http.ContentType
 import org.devops.exam.App
 import org.devops.exam.entity.Device
 import org.devops.exam.entity.Measurement
@@ -41,8 +42,15 @@ abstract class ControllerTestBase {
         resetDatabase.reset()
     }
 
-    fun getDummyDevice(measurements: List<Measurement> = emptyList()) = Device(
+    protected fun dummyDevice() = Device(
             name = faker.funnyName().name(),
-            measurements = measurements
+            measurements = emptyList() // added through `Measurement.device`
+    )
+
+    protected fun dummyMeasurement(device: Device) = Measurement(
+            sievert = faker.random().nextInt(1000).toLong(),
+            lat = faker.random().nextInt(-90, 90).toFloat(),
+            long = faker.random().nextInt(-180, 180).toFloat(),
+            device = device
     )
 }
