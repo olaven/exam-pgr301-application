@@ -3,21 +3,29 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
 
 
 ## Checklist 
-- [ ] Endpoints 
-    - [ ] Posting device 
-    - [ ] Getting device 
-    - [ ] Posting measurement
-    - [ ] Getting measurement
+- [X] Endpoints 
+    - [X] Posting device 
+    - [X] Getting device 
+    - [X] Posting measurement
+    - [X] Getting measurement
 - [X] Branch protection 
 - [ ] Oppgave 1 - Pipeline
+    - [ ] Infrastrukturkode i repo 
+        - [X] ikke ha modul (ha modul lokalt?) 
+        - [X] bruk aws for terraform-state
+        - [X] oppdater med travis 
+        - [ ] Sjekk at det er OK med en lokal terraformmodul
 - [ ] Travis 
 - [ ] Oppgave 2 - Pipeline
+    - [X] Du skal skrive en Dockerfil som kan brukes for å bygge et Container Image av Spring Boot applikasjonen din.
+    - [X] Du skal utvide pipeline, til å bygge et Docker image fra Docker filen
+    - [X] Docker image skal lastes opp til Docker Hub
 - [ ] Oppgave 3 - Pipeline
 - [ ] Oppgave 4 - Pipeline
 
 ## Notes 
 * [Maintail two github accounts](https://medium.com/the-andela-way/a-practical-guide-to-managing-multiple-github-accounts-8e7970c8fd46)
-* When cloning: `git clone git@github.com-devops:lagasild/REPO`
+* When cloning, use SSH: `git clone git@github.com-devops:lagasild/REPO`
 * Mail: lagasild@protonmail.com
 * Docker username: lagasild
 * Heroku username: mail
