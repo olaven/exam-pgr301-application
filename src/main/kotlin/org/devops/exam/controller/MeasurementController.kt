@@ -43,7 +43,7 @@ class MeasurementController(
     ): ResponseEntity<Iterable<Measurement>> {
 
         if (!deviceRepository.existsById(id)) return notFound().build()
-        val measurements = measurementRepository.findByDeviceDeviceId(id)
+        val measurements = measurementRepository.findByDeviceDeviceId(id).toList()
         return ResponseEntity.ok(measurements)
     }
 }

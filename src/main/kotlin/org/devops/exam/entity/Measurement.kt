@@ -9,7 +9,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
 @Entity
-data class Measurement (
+class Measurement (
 
         @field:NotNull
         @field:Min(0)

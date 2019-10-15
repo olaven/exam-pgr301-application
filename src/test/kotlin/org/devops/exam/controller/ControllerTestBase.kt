@@ -43,8 +43,8 @@ abstract class ControllerTestBase {
     }
 
     protected fun dummyDevice() = Device(
-            name = faker.funnyName().name(),
-            measurements = emptyList() // added through `Measurement.device`
+            name = faker.funnyName().name()
+            //measurements = emptyList() // added through `Measurement.device`
     )
 
     protected fun dummyMeasurement(device: Device) = Measurement(

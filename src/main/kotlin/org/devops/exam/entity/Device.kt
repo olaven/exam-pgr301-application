@@ -16,9 +16,9 @@ data class Device (
         @field:NotNull
         var name: String,
 
-        @field:NotNull
+        /*@field:NotNull
         @field:OneToMany(mappedBy = "device")
-        var measurements: List<Measurement>,
+        var measurements: List<Measurement>,*/
 
         @field:Id
         @field:GeneratedValue

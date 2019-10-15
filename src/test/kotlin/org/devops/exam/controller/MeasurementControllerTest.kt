@@ -5,7 +5,10 @@ import io.restassured.http.ContentType
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Measurement
+import org.hamcrest.Matchers
+import org.junit.jupiter.api.Disabled
 import kotlin.random.Random
+import kotlin.test.expect
 
 internal class MeasurementControllerTest: ControllerTestBase() {
 
@@ -97,32 +100,38 @@ internal class MeasurementControllerTest: ControllerTestBase() {
     }
 
     @Test
+    fun `getting returns 404 if invalid entity`() {
+
+        get(99)
+                .statusCode(404)
+    }
+
+    @Test //TODO: fix recursve problem visible here (always eager fetching)
     fun `getting measurements returns only those on device`() {
 
         val outerRuns = Random.nextInt(2, 5)
-        (0 until outerRuns).forEach {
+        (0 until outerRuns).forEach {_ ->
 
             val device = deviceRepository.save(dummyDevice())
-            val measurementCount = Random.nextInt(3, 10)
-            (0 until measurementCount).forEach {
+            val persistedCount = Random.nextInt(3, 10)
+            (0 until persistedCount).forEach { _ ->
 
                 post(device.deviceId!!, dummyMeasurement(device))
             }
 
-            val retrievedCount= get(device.deviceId!!)
+            val retrieved = get(device.deviceId!!)
                     .statusCode(200)
                     .extract()
                     .jsonPath()
                     .getList<Measurement>("")
-                    .count()
 
-            assertThat(retrievedCount)
-                    .isEqualTo(measurementCount)
+            assertThat(retrieved)
+                    .hasSize(persistedCount)
         }
     }
 
     private fun get(deviceId: Long) = given()
-            .get("/devices/{$deviceId}/measurements")
+            .get("/devices/${deviceId}/measurements")
             .then()
 
     private fun post(deviceId: Long, measurement: Measurement) = given()
