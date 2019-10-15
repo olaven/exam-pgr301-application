@@ -2,11 +2,15 @@ package org.devops.exam.controller
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
+import io.restassured.internal.mapping.Jackson1Mapper
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Device
+import org.hamcrest.Matchers
+import org.hamcrest.Matchers.*
+import kotlin.random.Random
 
-internal class DeviceTest: ControllerTestBase() {
+internal class DeviceControllerTest: ControllerTestBase() {
 
     @Test
     fun `can POST devices`() {
@@ -74,6 +78,29 @@ internal class DeviceTest: ControllerTestBase() {
         post(device)
                 .statusCode(400)
     }
+
+    @Test
+    fun `getting devices returns 200`() {
+
+        get()
+                .statusCode(200)
+    }
+
+    @Test
+    fun `getting returns all devices`() {
+
+        val n = Random.nextInt(1, 20)
+        val devices = deviceRepository.saveAll(
+                (0 until n).map { dummyDevice() }
+        ).toList()
+
+        assertThat(devices.count())
+                .isEqualTo(n)
+    }
+
+    private fun get() = given()
+            .get("/devices")
+            .then()
 
     private fun post(device: Device) = given()
             .contentType(ContentType.JSON)

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Measurement
 
-internal class MeasurementTest: ControllerTestBase() {
+internal class MeasurementControllerTest: ControllerTestBase() {
 
     @Test
     fun `can POST measurements`() {
