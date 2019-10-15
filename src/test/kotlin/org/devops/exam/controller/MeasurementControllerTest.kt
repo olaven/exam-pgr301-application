@@ -2,10 +2,10 @@ package org.devops.exam.controller
 
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.assertj.core.api.Assertions.assertThat
 import org.devops.exam.entity.Measurement
+import kotlin.random.Random
 
 internal class MeasurementControllerTest: ControllerTestBase() {
 
@@ -95,6 +95,35 @@ internal class MeasurementControllerTest: ControllerTestBase() {
         post(device.deviceId!!, measurement)
                 .statusCode(400)
     }
+
+    @Test
+    fun `getting measurements returns only those on device`() {
+
+        val outerRuns = Random.nextInt(2, 5)
+        (0 until outerRuns).forEach {
+
+            val device = deviceRepository.save(dummyDevice())
+            val measurementCount = Random.nextInt(3, 10)
+            (0 until measurementCount).forEach {
+
+                post(device.deviceId!!, dummyMeasurement(device))
+            }
+
+            val retrievedCount= get(device.deviceId!!)
+                    .statusCode(200)
+                    .extract()
+                    .jsonPath()
+                    .getList<Measurement>("")
+                    .count()
+
+            assertThat(retrievedCount)
+                    .isEqualTo(measurementCount)
+        }
+    }
+
+    private fun get(deviceId: Long) = given()
+            .get("/devices/{$deviceId}/measurements")
+            .then()
 
     private fun post(deviceId: Long, measurement: Measurement) = given()
             .contentType(ContentType.JSON)
