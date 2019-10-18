@@ -1,8 +1,8 @@
 package org.devops.exam.controller
 
+import io.micrometer.core.instrument.MeterRegistry
 import org.devops.exam.entity.Device
 import org.devops.exam.repository.DeviceRepository
-import org.devops.exam.repository.MeasurementRepository
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
@@ -15,7 +15,7 @@ import java.net.URI
 @RestController
 class DeviceController(
         private val deviceRepository: DeviceRepository,
-        private val measurementRepository: MeasurementRepository
+        private val meterRegistry: MeterRegistry
 ) {
 
     @PostMapping("/devices", produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -26,7 +26,8 @@ class DeviceController(
         //i.e. user tries to decide ID
         if (device.deviceId != null) {
 
-           return status(409).body(null)
+            meterRegistry.counter("post.device.conflicts").increment()
+            return status(409).body(null)
         }
 
         return handleConstraintViolation {
