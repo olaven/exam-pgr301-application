@@ -59,7 +59,7 @@ abstract class ControllerTestBase {
         return deviceRepository.save(entity)
     }
 
-    protected fun persistMeasurement(dto: MeasurementDTO, device: DeviceEntity): MeasurementEntity {
+    protected fun persistMeasurement(dto: MeasurementDTO = dummyMeasurement(), device: DeviceEntity): MeasurementEntity {
 
         val entity = MeasurementEntity(dto.sievert, dto.lat, dto.lat, device)
         return measurementRepository.save(entity)

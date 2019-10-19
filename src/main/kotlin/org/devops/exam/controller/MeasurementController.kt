@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.web.bind.annotation.*
 import java.net.URI
+import javax.websocket.server.PathParam
 
 
 @RestController
@@ -56,14 +57,26 @@ class MeasurementController {
 
     @GetMapping("/devices/{id}/measurements")
     fun getMeasurements(
-            @PathVariable("id") id: Long
-    ): ResponseEntity<Iterable<MeasurementDTO>> {
+            @PathVariable("id") id: Long,
+            @PathParam("sorted") sorted: Boolean
+    ): ResponseEntity<List<MeasurementDTO>> {
 
         if (!deviceRepository.existsById(id)) return notFound().build()
         val measurements = measurementRepository.findByDeviceId(id)
                 .toList()
                 .map { MeasurementDTO(it.sievert, it.lat, it.long, it.id) }
+                .also {
+                    registry.gauge("retrieved.measurements.count", it.count())
+                }
 
-        return ResponseEntity.ok(measurements)
+        return if (sorted) {
+
+            val sortedMeasurements = registry.timer("sorting.measurements").recordCallable {
+
+                measurements.sortedBy { it.sievert }
+            }
+            ResponseEntity.ok(sortedMeasurements)
+        }
+        else ResponseEntity.ok(measurements)
     }
 }

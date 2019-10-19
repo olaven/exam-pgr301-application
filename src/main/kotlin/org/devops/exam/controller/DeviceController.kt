@@ -47,5 +47,10 @@ class DeviceController(
     }
 
     @GetMapping("/devices")
-    fun getDevices() = ok(deviceRepository.findAll())
+    fun getDevices() = deviceRepository.findAll()
+            .map { DeviceDTO(it.name, it.id) }
+            .also {
+                registry.gauge("retrieved.devices.count", it.count())
+            }
+            .map { ok(it) }
 }
