@@ -3,7 +3,9 @@ package org.devops.exam.controller
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions.assertThat
-import org.devops.exam.entity.Measurement
+import org.devops.exam.dto.MeasurementDTO
+import org.devops.exam.entity.DeviceEntity
+import org.devops.exam.entity.MeasurementEntity
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
@@ -15,12 +17,16 @@ internal class MeasurementControllerTest: ControllerTestBase() {
         val n = 20
         val before = measurementRepository.findAll().count()
 
-        (0 until n).forEach { _ ->
+        (0 until n)
+                .map { dummyDevice() }
+                .map { DeviceEntity(it.name) }
+                .forEach {
 
-            val device = deviceRepository.save(dummyDevice())
-            post(deviceId = device.deviceId!!, measurement = dummyMeasurement(device))
-                    .statusCode(201)
-        }
+                    val device = deviceRepository.save(it)
+                    val measurement = dummyMeasurement()
+                    post(deviceId = device.id!!, measurement = measurement)
+                            .statusCode(201)
+                }
 
         val after = measurementRepository.findAll().count()
 
@@ -31,28 +37,18 @@ internal class MeasurementControllerTest: ControllerTestBase() {
     @Test
     fun `409 if client tries to decide ID`() {
 
-        val device = deviceRepository.save(dummyDevice())
-        val measurement = dummyMeasurement(device)
+        val device = persistDevice()
+        val measurement = dummyMeasurement()
         measurement.id = 99//NOTE: not null
-        post(device.deviceId!!, measurement)
-                .statusCode(409)
-    }
-
-    @Test
-    fun `409 if deviceId and path does not match`() {
-
-        val wrongDevice = deviceRepository.save(dummyDevice())
-        val device = deviceRepository.save(dummyDevice())
-        val measurement = dummyMeasurement(device)
-        post(wrongDevice.deviceId!!, measurement)
+        post(device.id!!, measurement)
                 .statusCode(409)
     }
 
     @Test
     fun `returned device has correct ID`() {
 
-        val device = deviceRepository.save(dummyDevice())
-        val id = post(device.deviceId!!, dummyMeasurement(device))
+        val device = persistDevice()
+        val id = post(device.id!!, dummyMeasurement())
                 .statusCode(201)
                 .extract()
                 .jsonPath()
@@ -66,18 +62,17 @@ internal class MeasurementControllerTest: ControllerTestBase() {
     @Test
     fun `returns 404 if device is not found`() {
 
-        val device = dummyDevice() //NOTE: not perssited
-        device.deviceId = 99
-        val measurement = dummyMeasurement(device)
-        post(device.deviceId!!, measurement)
+        val device = DeviceEntity("test name", 99) //NOTE: not persisted
+        val measurement = dummyMeasurement()
+        post(device.id!!, measurement)
                 .statusCode(404)
     }
 
     @Test
     fun `returned device has correct ID in location`() {
 
-        val device = deviceRepository.save(dummyDevice())
-        val location = post(device.deviceId!!, dummyMeasurement(device))
+        val device = persistDevice()
+        val location = post(device.id!!, dummyMeasurement())
                 .statusCode(201)
                 .extract()
                 .header("location")
@@ -89,10 +84,10 @@ internal class MeasurementControllerTest: ControllerTestBase() {
     @Test
     fun `getting 400 on device breaking database constraints`() {
 
-        val device = deviceRepository.save(dummyDevice())
-        val measurement = dummyMeasurement(device)
+        val device = persistDevice()
+        val measurement = dummyMeasurement()
         measurement.lat = 91f//NOTE: contraint at 90
-        post(device.deviceId!!, measurement)
+        post(device.id!!, measurement)
                 .statusCode(400)
     }
 
@@ -109,18 +104,18 @@ internal class MeasurementControllerTest: ControllerTestBase() {
         val outerRuns = Random.nextInt(2, 5)
         (0 until outerRuns).forEach {_ ->
 
-            val device = deviceRepository.save(dummyDevice())
+            val device = persistDevice()
             val persistedCount = Random.nextInt(3, 10)
             (0 until persistedCount).forEach { _ ->
 
-                post(device.deviceId!!, dummyMeasurement(device))
+                post(device.id!!, dummyMeasurement())
             }
 
-            val retrieved = get(device.deviceId!!)
+            val retrieved = get(device.id!!)
                     .statusCode(200)
                     .extract()
                     .jsonPath()
-                    .getList<Measurement>("")
+                    .getList<MeasurementEntity>("")
 
             assertThat(retrieved)
                     .hasSize(persistedCount)
@@ -131,7 +126,7 @@ internal class MeasurementControllerTest: ControllerTestBase() {
             .get("/devices/${deviceId}/measurements")
             .then()
 
-    private fun post(deviceId: Long, measurement: Measurement) = given()
+    private fun post(deviceId: Long, measurement: MeasurementDTO) = given()
             .contentType(ContentType.JSON)
             .body(measurement)
             .post("/devices/$deviceId/measurements")

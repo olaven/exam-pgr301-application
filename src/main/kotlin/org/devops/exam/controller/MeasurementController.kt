@@ -1,8 +1,12 @@
 package org.devops.exam.controller
 
-import org.devops.exam.entity.Measurement
+import io.micrometer.core.instrument.MeterRegistry
+import org.devops.exam.dto.DeviceDTO
+import org.devops.exam.dto.MeasurementDTO
+import org.devops.exam.entity.MeasurementEntity
 import org.devops.exam.repository.DeviceRepository
 import org.devops.exam.repository.MeasurementRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
 import org.springframework.web.bind.annotation.*
@@ -10,38 +14,56 @@ import java.net.URI
 
 
 @RestController
-class MeasurementController(
-        private val deviceRepository: DeviceRepository,
-        private val measurementRepository: MeasurementRepository
-) {
+class MeasurementController {
+
+    @Autowired
+    private lateinit var deviceRepository: DeviceRepository
+    @Autowired
+    private lateinit var measurementRepository: MeasurementRepository
+    @Autowired
+    private lateinit var registry: MeterRegistry
 
     @PostMapping("/devices/{deviceId}/measurements")
     fun postMeasurement(
             @PathVariable("deviceId") deviceId: Long,
-            @RequestBody measurement: Measurement
-    ): ResponseEntity<Measurement> {
+            @RequestBody measurement: MeasurementDTO
+    ): ResponseEntity<MeasurementDTO> {
 
-        if (measurement.id != null || deviceId != measurement.device.deviceId) {
+
+        if (measurement.id != null) {
             return ResponseEntity.status(409).build()
         }
 
         val entity = deviceRepository.findById(deviceId)
         if (!entity.isPresent) return notFound().build()
 
-        return handleConstraintViolation {
+        return handleConstraintViolation(registry) {
 
-            val persisted = measurementRepository.save(measurement)
-            ResponseEntity.created(URI.create("/devices/$deviceId/measurements")).body(persisted)
+            val device = deviceRepository.findById(deviceId)
+            if (!device.isPresent) ResponseEntity.notFound()
+
+            val entity = MeasurementEntity(measurement.sievert, measurement.lat, measurement.long, device.get())
+            val persisted = measurementRepository.save(entity)
+            measurement.apply {
+                this.id = persisted.id
+            }
+
+            registry.summary("summary.sievert").record(measurement.sievert.toDouble())
+            registry.counter("api.response", "created", "measurement").increment()
+            ResponseEntity.created(URI.create("/devices/$deviceId/measurements")).body(measurement)
         }
     }
 
     @GetMapping("/devices/{id}/measurements")
     fun getMeasurements(
             @PathVariable("id") id: Long
-    ): ResponseEntity<Iterable<Measurement>> {
+    ): ResponseEntity<Iterable<MeasurementDTO>> {
 
         if (!deviceRepository.existsById(id)) return notFound().build()
-        val measurements = measurementRepository.findByDeviceDeviceId(id).toList()
+        val measurements = measurementRepository.findByDeviceId(id)
+                .toList()
+                .map { MeasurementDTO(it.sievert, it.lat, it.long, it.id) }
+
         return ResponseEntity.ok(measurements)
     }
 }

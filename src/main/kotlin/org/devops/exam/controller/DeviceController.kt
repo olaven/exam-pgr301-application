@@ -1,8 +1,10 @@
 package org.devops.exam.controller
 
 import io.micrometer.core.instrument.MeterRegistry
-import org.devops.exam.entity.Device
+import org.devops.exam.dto.DeviceDTO
+import org.devops.exam.entity.DeviceEntity
 import org.devops.exam.repository.DeviceRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
@@ -14,26 +16,33 @@ import java.net.URI
 
 @RestController
 class DeviceController(
-        private val deviceRepository: DeviceRepository,
-        private val meterRegistry: MeterRegistry
+        private val deviceRepository: DeviceRepository
 ) {
+
+    @Autowired
+    private lateinit var registry: MeterRegistry
 
     @PostMapping("/devices", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun postDevice(
-            @RequestBody device: Device //TODO: ask if this should take a device or not. If not, update!
-    ): ResponseEntity<Device> {
+            @RequestBody dto: DeviceDTO //TODO: ask if this should take a dto or not. If not, update!
+    ): ResponseEntity<DeviceDTO> {
 
         //i.e. user tries to decide ID
-        if (device.deviceId != null) {
+        if (dto.deviceId != null) {
 
-            meterRegistry.counter("post.device.conflicts").increment()
+            registry.counter("api.response", "user.error", "conflict").increment()
             return status(409).body(null)
         }
 
-        return handleConstraintViolation {
+        return handleConstraintViolation(registry) {
 
-            val persisted = deviceRepository.save(device)
-            created(URI.create("${persisted.deviceId}")).body(persisted) //TODO: add endpoint for getting _one_ device (if so, update location)
+            val entity = DeviceEntity(dto.name)
+            val persisted = deviceRepository.save(entity)
+
+            registry.counter("api.response", "created", "device").increment()
+            created(URI.create("${persisted.id}")).body(dto.apply {
+                deviceId = persisted.id
+            }) //TODO: add endpoint for getting _one_ dto (if so, update location)
         }
     }
 
