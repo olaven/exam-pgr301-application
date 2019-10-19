@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity
-data class Device (
+data class DeviceEntity (
 
         @field:Length(min = 2, max = 100)
         @field:NotNull
@@ -19,5 +19,5 @@ data class Device (
 
         @field:Id
         @field:GeneratedValue
-        var deviceId: Long? = null
+        var id: Long? = null
 )

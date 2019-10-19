@@ -1,21 +1,31 @@
 package org.devops.exam.controller
 
+import io.micrometer.core.instrument.MeterRegistry
+import org.junit.internal.Throwables
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
+import org.springframework.transaction.TransactionSystemException
+import javax.persistence.RollbackException
 import javax.validation.ConstraintViolationException
 
-fun<T> handleConstraintViolation(runnable: () -> ResponseEntity<T>): ResponseEntity<T> {
+fun<T> handleConstraintViolation(
+        registry: MeterRegistry,
+        runnable: () -> ResponseEntity<T>
+): ResponseEntity<T> {
 
     return try {
 
-        return runnable()
+        runnable()
     } catch (exception: Exception) {
 
-        if (exception is ConstraintViolationException) {
+        if (exception is TransactionSystemException) {
 
+            registry.counter("api.response", "user.error", "bad.request").increment()
             ResponseEntity.status(400).build()
         } else {
 
-            ResponseEntity.badRequest().build()
+            registry.counter("api.response", "server.error", "persisting").increment()
+            ResponseEntity.status(500).build()
         }
     }
 }
