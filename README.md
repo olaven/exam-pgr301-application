@@ -30,11 +30,12 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
 - [ ] Oppgave 4 - Pipeline
      - [ ] logge datapunkter ved hjelp av rammeverket Micrometer
      - [ ] Minimun 
-        - [ ] Gauge
-        - [ ] Counter
+        - [X] Gauge
+        - [X] Counter
         - [ ] Distributionsummary 
-        - [ ] Timer 
+        - [X] Timer 
         - [ ] LongTaskTimer 
+    - [ ] Sjekk at forventet data er fornuftig 
     - [ ] Annen metric (i og med at kravet er minimum de over)
     - [ ] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
     - [ ] Dere må bruke Spring profiles og @Configuration i Spring til i bruke SimpleMeterRegistry når applikasjonen ikke kjører lokalt.   

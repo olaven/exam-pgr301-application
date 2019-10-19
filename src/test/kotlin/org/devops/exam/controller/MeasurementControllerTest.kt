@@ -98,7 +98,7 @@ internal class MeasurementControllerTest: ControllerTestBase() {
                 .statusCode(404)
     }
 
-    @Test //TODO: fix recursve problem visible here (always eager fetching)
+    @Test
     fun `getting measurements returns only those on device`() {
 
         val outerRuns = Random.nextInt(2, 5)
@@ -120,6 +120,42 @@ internal class MeasurementControllerTest: ControllerTestBase() {
             assertThat(retrieved)
                     .hasSize(persistedCount)
         }
+    }
+
+    @Test
+    fun `measurements are not sorted by default`() {
+
+        val device = persistDevice()
+        (0 until 20).forEach {
+
+            persistMeasurement(device = device)
+        }
+
+        val retrieved = get(deviceId = device.id!!)
+                .extract()
+                .`as`(Array<MeasurementDTO>::class.java)
+
+        assertThat(retrieved.sortedBy { it.sievert })
+                .isNotSameAs(retrieved)
+    }
+
+    @Test
+    fun `measurements are  sorted if explicitly asked to`() {
+
+        val device = persistDevice()
+        (0 until 20).forEach {
+
+            persistMeasurement(device = device)
+        }
+
+        val retrieved = given()
+                .get("/devices/${device.id}/measurements?sorted=true")
+                .then()
+                .extract()
+                .`as`(Array<MeasurementDTO>::class.java)
+
+        assertThat(retrieved.map { it.sievert })
+                .isSorted
     }
 
     private fun get(deviceId: Long) = given()
