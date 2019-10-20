@@ -50,7 +50,6 @@ class MeasurementController {
                 this.id = persisted.id
             }
 
-            registry.summary("summary.sievert").record(measurement.sievert.toDouble())
             registry.counter("api.response", "created", "measurement").increment()
             ResponseEntity.created(URI.create("/devices/$deviceId/measurements")).body(measurement)
         }
@@ -66,6 +65,9 @@ class MeasurementController {
         val measurements = measurementRepository.findByDeviceId(id)
                 .toList()
                 .map { MeasurementDTO(it.sievert, it.lat, it.long, it.id) }
+                .onEach {
+                    registry.summary("retrieved.measurements.values").record(it.sievert.toDouble())
+                }
                 .also {
                     registry.gauge("retrieved.measurements.count", it.count())
                 }
