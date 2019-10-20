@@ -1,6 +1,8 @@
 # Geiger ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
+## Extra endpoints 
+* `/devices/{id}/average` - returns average value of measurement 
 
 ## Checklist 
 - [X] Endpoints 
@@ -34,7 +36,7 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
         - [X] Counter
         - [ ] Distributionsummary 
         - [X] Timer 
-        - [ ] LongTaskTimer 
+        - [X] LongTaskTimer 
     - [ ] Sjekk at forventet data er fornuftig 
     - [ ] Annen metric (i og med at kravet er minimum de over)
     - [ ] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
