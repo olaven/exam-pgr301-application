@@ -1,7 +1,7 @@
 package org.devops.exam.controller
 
+import io.micrometer.core.instrument.LongTaskTimer
 import io.micrometer.core.instrument.MeterRegistry
-import org.devops.exam.dto.DeviceDTO
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
 import org.devops.exam.repository.DeviceRepository
@@ -9,6 +9,7 @@ import org.devops.exam.repository.MeasurementRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 import java.net.URI
 import javax.websocket.server.PathParam
@@ -35,15 +36,15 @@ class MeasurementController {
             return ResponseEntity.status(409).build()
         }
 
-        val entity = deviceRepository.findById(deviceId)
-        if (!entity.isPresent) return notFound().build()
+        val deviceEntity = deviceRepository.findById(deviceId)
+        if (!deviceEntity.isPresent) return notFound().build()
 
         return handleConstraintViolation(registry) {
 
-            val device = deviceRepository.findById(deviceId)
-            if (!device.isPresent) ResponseEntity.notFound()
+            val measurementEntity = deviceRepository.findById(deviceId)
+            if (!measurementEntity.isPresent) notFound().build<MeasurementDTO>()
 
-            val entity = MeasurementEntity(measurement.sievert, measurement.lat, measurement.long, device.get())
+            val entity = MeasurementEntity(measurement.sievert, measurement.lat, measurement.long, measurementEntity.get())
             val persisted = measurementRepository.save(entity)
             measurement.apply {
                 this.id = persisted.id
@@ -78,5 +79,23 @@ class MeasurementController {
             ResponseEntity.ok(sortedMeasurements)
         }
         else ResponseEntity.ok(measurements)
+    }
+
+    @GetMapping("/devices/{id}/average")
+    fun getAverage(
+            @PathVariable id: Long
+    ): ResponseEntity<Long> {
+
+        val measurements = measurementRepository.findByDeviceId(id)
+        if (measurements.isNullOrEmpty()) return notFound().build<Long>()
+
+        val average = registry.more().longTaskTimer("calculating.average").recordCallable {
+
+            val sum = measurements.map { it.sievert }.sum()
+            val count = measurements.count()
+            sum / count
+        }
+
+        return ok(average)
     }
 }

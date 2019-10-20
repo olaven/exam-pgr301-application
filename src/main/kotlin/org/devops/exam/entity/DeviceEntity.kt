@@ -13,10 +13,6 @@ data class DeviceEntity (
         @field:NotNull
         var name: String,
 
-        /*@field:NotNull
-        @field:OneToMany(mappedBy = "device")
-        var measurements: List<Measurement>,*/
-
         @field:Id
         @field:GeneratedValue
         var id: Long? = null
