@@ -3,7 +3,7 @@ services: docker
 deploy:
   - provider: script
     skip_cleanup: true
-    script: bash docker_push.sh
+    script: bash ./scripts/docker_push.sh
     on:
       branch: master
   - provider: heroku
