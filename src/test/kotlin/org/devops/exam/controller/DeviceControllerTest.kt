@@ -3,7 +3,8 @@ package org.devops.exam.controller
 import io.restassured.RestAssured.given
 import io.restassured.http.ContentType
 import org.assertj.core.api.Assertions.assertThat
-import org.devops.exam.entity.Device
+import org.devops.exam.dto.DeviceDTO
+import org.devops.exam.entity.DeviceEntity
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
@@ -88,7 +89,9 @@ internal class DeviceControllerTest: ControllerTestBase() {
 
         val n = Random.nextInt(1, 20)
         val devices = deviceRepository.saveAll(
-                (0 until n).map { dummyDevice() }
+                (0 until n)
+                        .map { dummyDevice() }
+                        .map { DeviceEntity(it.name) }
         ).toList()
 
         assertThat(devices.count())
@@ -99,9 +102,9 @@ internal class DeviceControllerTest: ControllerTestBase() {
             .get("/devices")
             .then()
 
-    private fun post(device: Device) = given()
+    private fun post(dto: DeviceDTO) = given()
             .contentType(ContentType.JSON)
-            .body(device)
+            .body(dto)
             .post("/devices")
             .then()
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.Max
 import javax.validation.constraints.Min
 
 @Entity
-class Measurement (
+class MeasurementEntity (
 
         @field:NotNull
         @field:Min(0)
@@ -27,7 +27,7 @@ class Measurement (
 
         @field:NotNull
         @field:ManyToOne
-        val device: Device,
+        val device: DeviceEntity,
 
         @field:Id
         @field:GeneratedValue
