@@ -1,9 +1,9 @@
 # Geiger ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
-## Setup
+## Setup (local/Heroku)
 add env variables: 
-* LOGZ_URL
+* LOGZ_URL 
 * LOGZ_TOKEN 
 
 ## Checklist 
