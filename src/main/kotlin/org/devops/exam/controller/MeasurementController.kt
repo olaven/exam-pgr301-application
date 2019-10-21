@@ -1,6 +1,7 @@
 package org.devops.exam.controller
 
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.binder.logging.LogbackMetrics
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
 import org.devops.exam.repository.DeviceRepository
@@ -28,17 +29,16 @@ class MeasurementController {
     fun postMeasurement(
             @PathVariable("deviceId") deviceId: Long,
             @RequestBody measurement: MeasurementDTO
-    ): ResponseEntity<MeasurementDTO> {
-
+    ): ResponseEntity<MeasurementDTO> = registry.timer("posting.measurement").recordCallable {
 
         if (measurement.id != null) {
-            return ResponseEntity.status(409).build()
+            return@recordCallable ResponseEntity.status(409).build()
         }
 
         val deviceEntity = deviceRepository.findById(deviceId)
-        if (!deviceEntity.isPresent) return notFound().build()
+        if (!deviceEntity.isPresent) return@recordCallable notFound().build()
 
-        return handleConstraintViolation(registry) {
+        handleConstraintViolation(registry) {
 
             val measurementEntity = deviceRepository.findById(deviceId)
             if (!measurementEntity.isPresent) notFound().build<MeasurementDTO>()
@@ -54,12 +54,13 @@ class MeasurementController {
         }
     }
 
+
     @GetMapping("/devices/{id}/measurements")
     fun getMeasurements(
             @PathVariable("id") id: Long,
-            @PathParam("sorted") sorted: Boolean
+            @PathParam("sorted") sorted: Boolean //NOTE: added to show LongTaskTimer
     ): ResponseEntity<List<MeasurementDTO>> {
-
+        
         if (!deviceRepository.existsById(id)) return notFound().build()
         val measurements = measurementRepository.findByDeviceId(id)
                 .toList()
