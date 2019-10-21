@@ -158,40 +158,6 @@ internal class MeasurementControllerTest: ControllerTestBase() {
                 .isSorted
     }
 
-    @Test
-    fun `can get average`() {
-
-        val device = persistDevice()
-
-        persistMeasurement(dummyMeasurement().apply { sievert = 10 }, device)
-        persistMeasurement(dummyMeasurement().apply { sievert = 15 }, device)
-        persistMeasurement(dummyMeasurement().apply { sievert = 20 }, device)
-
-        val average = getAverage(device.id!!)
-        assertThat(average)
-                .isEqualTo(15)
-    }
-
-    @Test
-    fun `average works with many combinations `() {
-
-        (1 until Random.nextInt(10)).forEach {
-
-            val device = persistDevice()
-            val values = mutableListOf<Long>()
-            (1 until Random.nextInt(2, 15)).forEach {
-
-                val value = Random.nextLong(300)
-                values.add(value)
-                persistMeasurement(dummyMeasurement().apply { sievert = value }, device)
-            }
-
-            val average = getAverage(device.id!!)
-            assertThat(average)
-                    .isEqualTo(values.average().toLong())
-        }
-    }
-
     private fun get(deviceId: Long) = given()
             .get("/devices/${deviceId}/measurements")
             .then()

@@ -58,12 +58,4 @@ class DeviceController(
                 registry.gauge("retrieved.devices.count", it.count())
             }
             .map { ok(it) }
-            .also {
-                if (registry is SimpleMeterRegistry) {
-
-                    println("ER SIMPLE, ${environment.activeProfiles.contentToString()}")
-                } else {
-                    println("ER _IKKE_ SIMPLE, ${environment.activeProfiles.contentToString()}")
-                }
-            }
 }

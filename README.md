@@ -35,7 +35,7 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
         - [X] Gauge
         - [X] Counter
         - [ ] Distributionsummary 
-        - [X] Timer 
+        - [] Timer 
         - [X] LongTaskTimer 
     - [ ] Sjekk at forventet data er fornuftig 
     - [ ] Annen metric (i og med at kravet er minimum de over)
