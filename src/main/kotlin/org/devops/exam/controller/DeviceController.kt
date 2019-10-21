@@ -1,10 +1,12 @@
 package org.devops.exam.controller
 
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import org.devops.exam.dto.DeviceDTO
 import org.devops.exam.entity.DeviceEntity
 import org.devops.exam.repository.DeviceRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.env.Environment
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
@@ -42,9 +44,12 @@ class DeviceController(
             registry.counter("api.response", "created", "device").increment()
             created(URI.create("${persisted.id}")).body(dto.apply {
                 deviceId = persisted.id
-            }) //TODO: add endpoint for getting _one_ dto (if so, update location)
+            })
         }
     }
+
+    @Autowired
+    lateinit var environment: Environment
 
     @GetMapping("/devices")
     fun getDevices() = deviceRepository.findAll()
@@ -53,4 +58,12 @@ class DeviceController(
                 registry.gauge("retrieved.devices.count", it.count())
             }
             .map { ok(it) }
+            .also {
+                if (registry is SimpleMeterRegistry) {
+
+                    println("ER SIMPLE, ${environment.activeProfiles.contentToString()}")
+                } else {
+                    println("ER _IKKE_ SIMPLE, ${environment.activeProfiles.contentToString()}")
+                }
+            }
 }
