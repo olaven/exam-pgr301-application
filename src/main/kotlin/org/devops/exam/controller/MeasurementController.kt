@@ -1,6 +1,5 @@
 package org.devops.exam.controller
 
-import io.micrometer.core.instrument.LongTaskTimer
 import io.micrometer.core.instrument.MeterRegistry
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
@@ -78,11 +77,12 @@ class MeasurementController {
 
                 measurements.sortedBy { it.sievert }
             }
-            ResponseEntity.ok(sortedMeasurements)
+            ok(sortedMeasurements)
         }
-        else ResponseEntity.ok(measurements)
+        else ok(measurements)
     }
 
+    //TODO: REMOVE THIS, find creative solution in other endpoint
     @GetMapping("/devices/{id}/average")
     fun getAverage(
             @PathVariable id: Long

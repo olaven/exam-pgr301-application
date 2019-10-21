@@ -46,6 +46,8 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
     innsamling, visualisering og analyse av logger. Dere skal utvide applikasjonen 
     på en slik måte at logger sendes til denne tjenesten. Spring boot applikasjonen
      må modifiseres slik at loggene sendes til tjenesten.
+- [ ] Sjekk alle TODOs 
+- [ ] Ga gjennom alt 
       
 
 ## Notes 
