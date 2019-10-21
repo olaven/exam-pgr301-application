@@ -6,6 +6,7 @@ import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
 import org.devops.exam.repository.DeviceRepository
 import org.devops.exam.repository.MeasurementRepository
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.notFound
@@ -25,6 +26,8 @@ class MeasurementController {
     @Autowired
     private lateinit var registry: MeterRegistry
 
+    private val logger = LoggerFactory.getLogger(this::class.java)
+
     @PostMapping("/devices/{deviceId}/measurements")
     fun postMeasurement(
             @PathVariable("deviceId") deviceId: Long,
@@ -38,7 +41,7 @@ class MeasurementController {
         val deviceEntity = deviceRepository.findById(deviceId)
         if (!deviceEntity.isPresent) return@recordCallable notFound().build()
 
-        handleConstraintViolation(registry) {
+        handleConstraintViolation(registry, logger) {
 
             val measurementEntity = deviceRepository.findById(deviceId)
             if (!measurementEntity.isPresent) notFound().build<MeasurementDTO>()
@@ -66,14 +69,19 @@ class MeasurementController {
                 .toList()
                 .map { MeasurementDTO(it.sievert, it.lat, it.long, it.id) }
                 .onEach {
+
+                    logger.debug("Sending measurement: sievert: ${it.sievert}, lat: ${it.lat}, long: ${it.long}")
                     registry.summary("retrieved.measurements.values").record(it.sievert.toDouble())
                 }
                 .also {
+
+                    logger.info("${it.count()} (all) from device $id were retrieved")
                     registry.gauge("retrieved.measurements.count", it.count())
                 }
 
         return if (sorted) {
-            //TODO: find place for normal timer
+
+            logger.debug("User wants to sort")
             val sortedMeasurements = registry.more().longTaskTimer("sorting.measurements").recordCallable {
 
                 measurements.sortedBy { it.sievert }

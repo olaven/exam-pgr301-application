@@ -38,7 +38,7 @@ class DeviceController(
             return status(409).body(null)
         }
 
-        return handleConstraintViolation(registry) {
+        return handleConstraintViolation(registry, logger) {
 
             val entity = DeviceEntity(dto.name)
             val persisted = deviceRepository.save(entity)
@@ -54,7 +54,9 @@ class DeviceController(
     fun getDevices() = deviceRepository.findAll()
             .map { DeviceDTO(it.name, it.id) }
             .also {
+
                 registry.gauge("retrieved.devices.count", it.count())
+                logger.debug("Current device count: ${it.count()}")
                 logger.info("User requests devices")
             }
             .map { ok(it) }

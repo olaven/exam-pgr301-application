@@ -1,8 +1,10 @@
 # Geiger ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
-## Extra endpoints 
-* `/devices/{id}/average` - returns average value of measurement 
+## Setup
+add env variables: 
+* LOGZ_URL
+* LOGZ_TOKEN 
 
 ## Checklist 
 - [X] Endpoints 
