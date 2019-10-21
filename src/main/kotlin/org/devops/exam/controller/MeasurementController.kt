@@ -72,32 +72,13 @@ class MeasurementController {
                 }
 
         return if (sorted) {
-
-            val sortedMeasurements = registry.timer("sorting.measurements").recordCallable {
+            //TODO: find place for normal timer
+            val sortedMeasurements = registry.more().longTaskTimer("sorting.measurements").recordCallable {
 
                 measurements.sortedBy { it.sievert }
             }
             ok(sortedMeasurements)
         }
         else ok(measurements)
-    }
-
-    //TODO: REMOVE THIS, find creative solution in other endpoint
-    @GetMapping("/devices/{id}/average")
-    fun getAverage(
-            @PathVariable id: Long
-    ): ResponseEntity<Long> {
-
-        val measurements = measurementRepository.findByDeviceId(id)
-        if (measurements.isNullOrEmpty()) return notFound().build<Long>()
-
-        val average = registry.more().longTaskTimer("calculating.average").recordCallable {
-
-            val sum = measurements.map { it.sievert }.sum()
-            val count = measurements.count()
-            sum / count
-        }
-
-        return ok(average)
     }
 }
