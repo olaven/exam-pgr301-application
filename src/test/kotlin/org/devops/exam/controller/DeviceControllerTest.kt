@@ -30,15 +30,6 @@ internal class DeviceControllerTest: ControllerTestBase() {
     }
 
     @Test
-    fun `409 if client tries to decide ID`() {
-
-        val device = dummyDevice()
-        device.deviceId = 42 //NOTE: Not null
-        post(device)
-                .statusCode(409)
-    }
-
-    @Test
     fun `returned device has correct ID on deviceId`() {
 
         val device = dummyDevice()
@@ -67,16 +58,7 @@ internal class DeviceControllerTest: ControllerTestBase() {
         assertThat(retrieved)
                 .isPresent
     }
-
-    @Test
-    fun `getting 400 on device breaking database constraints`() {
-
-        val device = dummyDevice()
-        device.name = "a"; //NOTE: annotated with minimum size = 2
-        post(device)
-                .statusCode(400)
-    }
-
+    
     @Test
     fun `getting devices returns 200`() {
 

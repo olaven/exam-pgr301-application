@@ -130,7 +130,6 @@
       <groupId>com.github.javafaker</groupId>
       <artifactId>javafaker</artifactId>
       <version>${version.faker}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
