@@ -29,7 +29,7 @@ add env variables:
     - [X] Du skal utvide pipeline, til å bygge et Docker image fra Docker filen
     - [X] Docker image skal lastes opp til Docker Hub
 - [ ] Oppgave 3 - Pipeline
-    - [ ] Implementer infrastruktur for varsling ved hjelp av SAAS tjenesten OpsGenie
+    - [X] Implementer infrastruktur for varsling ved hjelp av SAAS tjenesten OpsGenie
     - [X] Implementer infrastruktur for overvåkning ved hjelp av SAAS tjenesten StatusCake
 - [ ] Oppgave 4 - Pipeline
      - [ ] logge datapunkter ved hjelp av rammeverket Micrometer

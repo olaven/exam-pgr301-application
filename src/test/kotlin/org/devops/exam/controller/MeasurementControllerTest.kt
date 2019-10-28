@@ -77,7 +77,7 @@ internal class MeasurementControllerTest: ControllerTestBase() {
                 .extract()
                 .header("location")
 
-        //NOTE: returns every measurement, not specific one. TODO: change if adding endpoints is allowed.
+        //NOTE: returns every measurement, not specific one, as adding endpoints is not allowed in exam.
         given().get(location).then().statusCode(200)
     }
 
