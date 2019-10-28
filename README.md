@@ -1,10 +1,18 @@
-# Geiger ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
+# Geiger 
+<a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5263662&Days=1&Design=1" /></a>
+![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
+
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
-## Setup (local/Heroku)
-add env variables: 
-* LOGZ_URL 
-* LOGZ_TOKEN 
+## Setup
+### Running locally   
+* `export LOGZ_TOKEN=<your_token>`
+* `export LOGZ_URL=<your_url>`
+### Pipline / Docker 
+* `travis encrypt DOCKER_USERNAME=<your_username> --add`
+* `travis encrypt STATUSCAKE_PASSWORD=<your_password> --add`
+
+## Travis setup 
 
 ## Checklist 
 - [X] Endpoints 
