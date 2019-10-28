@@ -1,5 +1,6 @@
 package org.devops.exam.controller
 
+import com.github.javafaker.Faker
 import io.micrometer.core.instrument.MeterRegistry
 import org.devops.exam.dto.DeviceDTO
 import org.devops.exam.entity.DeviceEntity
@@ -26,27 +27,16 @@ class DeviceController(
     private val logger = LoggerFactory.getLogger(this::class.java)
 
     @PostMapping("/devices", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun postDevice(
-            @RequestBody dto: DeviceDTO //TODO: ask if this should take a dto or not. If not, update!
-    ): ResponseEntity<DeviceDTO> {
+    fun postDevice(): ResponseEntity<DeviceDTO> {
 
         logger.info("Received POST to /devices")
-        //i.e. user tries to decide ID
-        if (dto.deviceId != null) {
-
-            registry.counter("api.response", "user.error", "conflict").increment()
-            return status(409).body(null)
-        }
-
         return handleConstraintViolation(registry, logger) {
 
-            val entity = DeviceEntity(dto.name)
+            val entity = DeviceEntity(Faker().funnyName().name())
             val persisted = deviceRepository.save(entity)
 
             registry.counter("api.response", "created", "device").increment()
-            created(URI.create("${persisted.id}")).body(dto.apply {
-                deviceId = persisted.id
-            })
+            created(URI.create("${persisted.id}")).body(DeviceDTO(persisted.name, persisted.id))
         }
     }
 
