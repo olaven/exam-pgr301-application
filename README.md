@@ -4,13 +4,15 @@
 
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
+
 ## Setup
 ### Running locally   
 * `export LOGZ_TOKEN=<your_token>`
 * `export LOGZ_URL=<your_url>`
 ### Pipline / Docker 
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
-* `travis encrypt STATUSCAKE_PASSWORD=<your_password> --add`
+* `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
+* `travis encrypt $(heroku auth:token) --add deploy.api_key`
 
 ## Travis setup 
 
@@ -40,15 +42,15 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
     - [X] Implementer infrastruktur for varsling ved hjelp av SAAS tjenesten OpsGenie
     - [X] Implementer infrastruktur for overvåkning ved hjelp av SAAS tjenesten StatusCake
 - [ ] Oppgave 4 - Pipeline
-     - [ ] logge datapunkter ved hjelp av rammeverket Micrometer
-     - [ ] Minimun 
+     - [X] logge datapunkter ved hjelp av rammeverket Micrometer
+     - [X] Minimun 
         - [X] Gauge
         - [X] Counter
         - [X] Distributionsummary 
         - [X] Timer 
         - [X] LongTaskTimer 
-    - [ ] Sjekk at forventet data er fornuftig 
-    - [ ] Annen metric (i og med at kravet er minimum de over)
+    - [X] Sjekk at forventet data er fornuftig 
+    - [X] Annen metric (i og med at kravet er minimum de over) (gaugeCollectionSize)
     - [X] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
     - [X] Dere må bruke Spring profiles og @Configuration i Spring til i bruke SimpleMeterRegistry når applikasjonen ikke kjører lokalt.   
 - [X] Oppgave 5
