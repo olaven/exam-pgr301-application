@@ -2,17 +2,17 @@
 <configuration>
     <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
-    <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
-        <token>${LOGZ_TOKEN}</token>
-        <logzioUrl>${LOGZ_URL}</logzioUrl>
-        <logzioType>myType</logzioType>
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
-        </filter>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
     </appender>
 
     <root level="info">
         <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
-        <appender-ref ref="LogzioLogbackAppender"/>
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>
