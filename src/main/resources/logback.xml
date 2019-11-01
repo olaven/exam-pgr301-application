@@ -1,6 +1,12 @@
-<!-- Use debug=true here if you want to see output from the appender itself -->
+<!--
+ Logback config depends on spring profile.
+ If running locally, should print logs to stdout.
+ If not, should go to logz.io.
+
+ This is in accordance with https://12factor.net/logs
+ -->
 <configuration>
-    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
+
     <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
     <appender name="LogzioLogbackAppender" class="io.logz.logback.LogzioLogbackAppender">
         <token>${LOGZ_TOKEN}</token>
@@ -12,7 +18,6 @@
     </appender>
 
     <root level="info">
-        <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
         <appender-ref ref="LogzioLogbackAppender"/>
     </root>
 </configuration>

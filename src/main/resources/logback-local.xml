@@ -1,18 +1,20 @@
-<!-- Use debug=true here if you want to see output from the appender itself -->
-<configuration>
-    <!-- Use shutdownHook so that we can close gracefully and finish the log drain -->
-    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+<!--
+ Logback config depends on spring profile.
+ If running locally, should print logs to stdout.
+ If not, should go to logz.io.
 
+ This is in accordance with https://12factor.net/logs
+ -->
+<configuration>
+
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are assigned the type
-             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
         <encoder>
             <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
 
     <root level="info">
-        <!-- IMPORTANT: make sure to include this line, otherwise the appender won't be used -->
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
