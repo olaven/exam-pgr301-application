@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.net.URI
+import java.util.concurrent.TimeUnit
 
 @RestController
 class DeviceController(
@@ -31,6 +32,8 @@ class DeviceController(
 
         logger.info("Received POST to /devices")
         return handleConstraintViolation(registry, logger) {
+
+            //registry.More().timeGauge(TimeUnit.SECONDS) //TODO
 
             val entity = DeviceEntity(Faker().funnyName().name())
             val persisted = deviceRepository.save(entity)
