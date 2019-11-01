@@ -40,7 +40,7 @@ add env variables:
         - [X] Timer 
         - [X] LongTaskTimer 
     - [ ] Sjekk at forventet data er fornuftig 
-    - [ ] Annen metric (i og med at kravet er minimum de over)
+    - [ ] Annen metric (i og med at kravet er minimum de over) (timegauge?)
     - [X] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
     - [X] Dere må bruke Spring profiles og @Configuration i Spring til i bruke SimpleMeterRegistry når applikasjonen ikke kjører lokalt.   
 - [ ] Oppgave 5

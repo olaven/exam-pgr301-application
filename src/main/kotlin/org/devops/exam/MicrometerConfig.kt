@@ -11,6 +11,14 @@ import org.springframework.context.annotation.Profile
 @Profile("!local")
 class MicrometerConfig {
 
+    /*
+    * This is triggered, but it does not
+    * do anything on its own.
+    *
+    * In the application-properties file,
+    * metrics will be disabled for all
+    * environments except `local`*/
+
     @Primary
     @Bean
     fun meterRegistry(): MeterRegistry = SimpleMeterRegistry()
