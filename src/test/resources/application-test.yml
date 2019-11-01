@@ -2,6 +2,6 @@ management:
   metrics:
     export:
       influx:
-        enabled: true
+        enabled: false
 logging:
   config: src/main/resources/logback-local.xml

@@ -1,0 +1,20 @@
+<!--
+ Logback config depends on spring profile.
+ If running locally, should print logs to stdout.
+ If not, should go to logz.io.
+
+ This is in accordance with https://12factor.net/logs
+ -->
+<configuration>
+
+    <shutdownHook class="ch.qos.logback.core.hook.DelayingShutdownHook"/>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-4relative [%thread] %-5level %logger{35} - %msg %n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

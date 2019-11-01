@@ -1,5 +1,7 @@
 management:
-    metrics:
-        export:
-            influx:
-                enabled: false
+  metrics:
+    export:
+      influx:
+        enabled: false
+logging:
+  config: src/main/resources/logback.xml
