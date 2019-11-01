@@ -1,12 +1,23 @@
-# Geiger ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
+# Geiger 
+<a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5263662&Days=1&Design=1" /></a>
+![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
+
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
-## Setup (local/Heroku)
-add env variables: TODO: travis encrypt  
-* LOGZ_URL 
+
+## Setup
+### Running locally   
+* `export LOGZ_TOKEN=<your_token>`
+* `export LOGZ_URL=<your_url>`
+### Pipline / Docker 
+* `travis encrypt DOCKER_USERNAME=<your_username> --add`
+* `travis encrypt STATUSCAKE_PASSWORD=<your_password> --add`
+* LOGZ_URL # Hvordan henger dette sammen?
 * LOGZ_TOKEN 
 * HEROKU_APP_NAME
 * heroku api KEye (sjekk oeving)
+
+## Travis setup 
 
 ## Checklist 
 - [X] Endpoints 
@@ -15,13 +26,13 @@ add env variables: TODO: travis encrypt
     - [X] Posting measurement
     - [X] Getting measurement
 - [X] Branch protection 
-- [ ] Oppgave 1 - Pipeline
-    - [ ] Infrastrukturkode i repo 
+- [X] Oppgave 1 - Pipeline
+    - [X] Infrastrukturkode i repo 
         - [X] ikke ha modul (ha modul lokalt?) 
         - [X] bruk aws for terraform-state
         - [X] oppdater med travis 
-        - [ ] Sjekk at det er OK med en lokal terraformmodul
-- [ ] Travis 
+        - [X] Sjekk at det er OK med en lokal terraformmodul
+- [X] Travis 
     - [X] Det skal lages en CI/CDpipeline for applikasjonen ved hjelp av Travis CI.
     - [X] Det skal også være en tilsvarende pipeline for infrastruktur.
     - [X] Pipeline skal deploye hver commit på master branch til "CI" miljøet i heroku, ved ok bygg og når testene ikke feiler.
@@ -45,7 +56,7 @@ add env variables: TODO: travis encrypt
     - [X] Annen metric (i og med at kravet er minimum de over) (gaugeCollectionSize)
     - [X] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
     - [X] Dere må bruke Spring profiles og @Configuration i Spring til i bruke SimpleMeterRegistry når applikasjonen ikke kjører lokalt.   
-- [ ] Oppgave 5
+- [X] Oppgave 5
     * Denne oppgaven består av å bruke en SAAS tjeneste, Logz.io for 
     innsamling, visualisering og analyse av logger. Dere skal utvide applikasjonen 
     på en slik måte at logger sendes til denne tjenesten. Spring boot applikasjonen
