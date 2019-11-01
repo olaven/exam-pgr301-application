@@ -11,11 +11,8 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
 * `export LOGZ_URL=<your_url>`
 ### Pipline / Docker 
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
-* `travis encrypt STATUSCAKE_PASSWORD=<your_password> --add`
-* LOGZ_URL # Hvordan henger dette sammen?
-* LOGZ_TOKEN 
-* HEROKU_APP_NAME
-* heroku api KEye (sjekk oeving)
+* `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
+* `travis encrypt $(heroku auth:token) --add deploy.api_key`
 
 ## Travis setup 
 
