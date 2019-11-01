@@ -2,14 +2,10 @@
 <a href="https://www.statuscake.com" title="Website Uptime Monitoring"><img src="https://app.statuscake.com/button/index.php?Track=5263662&Days=1&Design=1" /></a>
 ![Image of Travis status](https://travis-ci.org/lagasild/geiger.svg?branch=master)
 
-Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
+Application repository for exam in "DevOps in the Cloud" at Kristiania University College. 
+Infrastructure may be found [here](https://github.com/lagasild/infrastructure). 
 
-
-## Setup
-### Running locally   
-* `export LOGZ_TOKEN=<your_token>`
-* `export LOGZ_URL=<your_url>`
-### Pipline / Docker 
+## Setup 
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
 * `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
 * `travis encrypt $(heroku auth:token) --add deploy.api_key`
@@ -58,7 +54,7 @@ Main repository for exam in "DevOps in the Cloud" at Kristiania University Colle
     innsamling, visualisering og analyse av logger. Dere skal utvide applikasjonen 
     på en slik måte at logger sendes til denne tjenesten. Spring boot applikasjonen
      må modifiseres slik at loggene sendes til tjenesten.
-- [ ] Sjekk alle TODOs 
+- [X] Sjekk alle TODOs 
 - [ ] Ga gjennom alt 
       
 

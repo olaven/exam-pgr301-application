@@ -3,7 +3,6 @@ package org.devops.exam.controller
 import io.micrometer.core.instrument.DistributionSummary
 import io.micrometer.core.instrument.MeterRegistry
 import io.micrometer.core.instrument.Tag
-import io.micrometer.core.instrument.binder.logging.LogbackMetrics
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
 import org.devops.exam.repository.DeviceRepository
@@ -73,7 +72,6 @@ class MeasurementController {
                 .onEach { measurement ->
 
                     logger.debug("Sending measurement: sievert: ${measurement.sievert}, lat: ${measurement.lat}, long: ${measurement.long}")
-                    //registry.summary("retrieved.measurements.values").percentile()//.record(it.sievert.toDouble())
                     DistributionSummary.builder("retrieved.measurements.values")
                             .publishPercentiles(.25, .5, .75)
                             .register(registry)
