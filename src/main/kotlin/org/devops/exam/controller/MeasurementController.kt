@@ -1,6 +1,8 @@
 package org.devops.exam.controller
 
+import io.micrometer.core.instrument.DistributionSummary
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import io.micrometer.core.instrument.binder.logging.LogbackMetrics
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
@@ -68,15 +70,19 @@ class MeasurementController {
         val measurements = measurementRepository.findByDeviceId(id)
                 .toList()
                 .map { MeasurementDTO(it.sievert, it.lat, it.long, it.id) }
-                .onEach {
+                .onEach { measurement ->
 
-                    logger.debug("Sending measurement: sievert: ${it.sievert}, lat: ${it.lat}, long: ${it.long}")
-                    registry.summary("retrieved.measurements.values").record(it.sievert.toDouble())
+                    logger.debug("Sending measurement: sievert: ${measurement.sievert}, lat: ${measurement.lat}, long: ${measurement.long}")
+                    //registry.summary("retrieved.measurements.values").percentile()//.record(it.sievert.toDouble())
+                    DistributionSummary.builder("retrieved.measurements.values")
+                            .publishPercentiles(.25, .5, .75)
+                            .register(registry)
                 }
-                .also {
+                .also { measurement ->
 
-                    logger.info("${it.count()} (all) from device $id were retrieved")
-                    registry.gauge("retrieved.measurements.count", it.count())
+                    logger.info("${measurement.count()} (all) from device $id were retrieved")
+                    registry.gaugeCollectionSize("retrieved.measurements.count", listOf(Tag.of("type", "collection")), measurement)
+                    registry.gauge("retrieved.measurements.average", measurement.map { it.sievert }.average())
                 }
 
         return if (sorted) {
