@@ -2,6 +2,7 @@ package org.devops.exam.controller
 
 import io.micrometer.core.instrument.DistributionSummary
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import io.micrometer.core.instrument.binder.logging.LogbackMetrics
 import org.devops.exam.dto.MeasurementDTO
 import org.devops.exam.entity.MeasurementEntity
@@ -80,7 +81,7 @@ class MeasurementController {
                 .also { measurement ->
 
                     logger.info("${measurement.count()} (all) from device $id were retrieved")
-                    registry.gauge("retrieved.measurements.count", measurement.count())
+                    registry.gaugeCollectionSize("retrieved.measurements.count", listOf(Tag.of("type", "collection")), measurement)
                     registry.gauge("retrieved.measurements.average", measurement.map { it.sievert }.average())
                 }
 

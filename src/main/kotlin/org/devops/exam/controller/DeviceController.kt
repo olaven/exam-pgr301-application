@@ -33,8 +33,6 @@ class DeviceController(
         logger.info("Received POST to /devices")
         return handleConstraintViolation(registry, logger) {
 
-            //registry.More().timeGauge(TimeUnit.SECONDS) //TODO
-
             val entity = DeviceEntity(Faker().funnyName().name())
             val persisted = deviceRepository.save(entity)
 

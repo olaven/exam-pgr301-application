@@ -24,23 +24,23 @@ add env variables:
     - [X] Det skal også være en tilsvarende pipeline for infrastruktur.
     - [X] Pipeline skal deploye hver commit på master branch til "CI" miljøet i heroku, ved ok bygg og når testene ikke feiler.
     - [X] Deployment fra CI-miljø videre til Stage og produksjon skal skje manuelt ved at man promoterer applikasjonen i Heroku UI (Eller CLI). Studentene kan fritt velge å implementre kontinuerlig deployment til stage, og fra stage til prod - men det gis ikke poeng for dette.
-- [ ] Oppgave 2 - Pipeline
+- [X] Oppgave 2 - Pipeline
     - [X] Du skal skrive en Dockerfil som kan brukes for å bygge et Container Image av Spring Boot applikasjonen din.
     - [X] Du skal utvide pipeline, til å bygge et Docker image fra Docker filen
     - [X] Docker image skal lastes opp til Docker Hub
-- [ ] Oppgave 3 - Pipeline
+- [X] Oppgave 3 - Pipeline
     - [X] Implementer infrastruktur for varsling ved hjelp av SAAS tjenesten OpsGenie
     - [X] Implementer infrastruktur for overvåkning ved hjelp av SAAS tjenesten StatusCake
 - [ ] Oppgave 4 - Pipeline
-     - [ ] logge datapunkter ved hjelp av rammeverket Micrometer
-     - [ ] Minimun 
+     - [X] logge datapunkter ved hjelp av rammeverket Micrometer
+     - [X] Minimun 
         - [X] Gauge
         - [X] Counter
         - [X] Distributionsummary 
         - [X] Timer 
         - [X] LongTaskTimer 
-    - [ ] Sjekk at forventet data er fornuftig 
-    - [ ] Annen metric (i og med at kravet er minimum de over) (timegauge?)
+    - [X] Sjekk at forventet data er fornuftig 
+    - [X] Annen metric (i og med at kravet er minimum de over) (gaugeCollectionSize)
     - [X] Levere Metrics til InfluxDB (som antasa aa kjoere paa egen container)
     - [X] Dere må bruke Spring profiles og @Configuration i Spring til i bruke SimpleMeterRegistry når applikasjonen ikke kjører lokalt.   
 - [ ] Oppgave 5
