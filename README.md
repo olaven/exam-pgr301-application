@@ -2,9 +2,11 @@
 Main repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 
 ## Setup (local/Heroku)
-add env variables: 
+add env variables: TODO: travis encrypt  
 * LOGZ_URL 
 * LOGZ_TOKEN 
+* HEROKU_APP_NAME
+* heroku api KEye (sjekk oeving)
 
 ## Checklist 
 - [X] Endpoints 
