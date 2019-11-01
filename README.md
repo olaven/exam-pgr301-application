@@ -5,11 +5,7 @@
 Application repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 Infrastructure may be found [here](https://github.com/lagasild/infrastructure). 
 
-## Setup
-### Running locally   
-* `export LOGZ_TOKEN=<your_token>`
-* `export LOGZ_URL=<your_url>`
-### Pipline / Docker 
+## Setup 
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
 * `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
 * `travis encrypt $(heroku auth:token) --add deploy.api_key`
