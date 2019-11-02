@@ -53,6 +53,7 @@ class MeasurementController {
                 this.id = persisted.id
             }
 
+            registry.gauge("all.measurements.average", measurementRepository.findAll().map { it.sievert }.average())
             registry.counter("api.response", "created", "measurement").increment()
             ResponseEntity.created(URI.create("/devices/$deviceId/measurements")).body(measurement)
         }
@@ -82,8 +83,6 @@ class MeasurementController {
                 .also { measurement ->
 
                     logger.info("${measurement.count()} (all) from device $id were retrieved")
-                    registry.gaugeCollectionSize("retrieved.measurements.count", listOf(Tag.of("type", "collection")), measurement)
-                    registry.gauge("retrieved.measurements.average", measurement.map { it.sievert }.average())
                 }
 
         return if (sorted) {
