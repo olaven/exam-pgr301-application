@@ -6,9 +6,10 @@ Application repository for exam in "DevOps in the Cloud" at Kristiania Universit
 Infrastructure may be found [here](https://github.com/lagasild/infrastructure). 
 
 ## Setup
-## Local 
-* Set Spring Boot profile to `local` in IDE or through `$SPRING_PROFILES_ACTIVE`
+## Local  
 * Start influx locally,`./scripts/start_influx.sh`
+* Set Spring Boot profile to `local` in IDE
+* Start application from `App.kt`
 ## Pipeline  
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
 * `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
