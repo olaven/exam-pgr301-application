@@ -5,7 +5,12 @@
 Application repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 Infrastructure may be found [here](https://github.com/lagasild/infrastructure). 
 
-## Setup 
+## Setup
+## Local  
+* Start influx locally,`./scripts/start_influx.sh`
+* Set Spring Boot profile to `local` in IDE
+* Start application from `App.kt`
+## Pipeline  
 * `travis encrypt DOCKER_USERNAME=<your_username> --add`
 * `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
 * `travis encrypt $(heroku auth:token) --add deploy.api_key`
