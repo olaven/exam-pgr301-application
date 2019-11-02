@@ -4,4 +4,4 @@ management:
       influx:
         enabled: false
 logging:
-  config: src/main/resources/logback.xml
+  config: src/main/resources/logback-logzio.xml
