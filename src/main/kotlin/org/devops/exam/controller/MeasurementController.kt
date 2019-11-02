@@ -74,7 +74,10 @@ class MeasurementController {
                     logger.debug("Sending measurement: sievert: ${measurement.sievert}, lat: ${measurement.lat}, long: ${measurement.long}")
                     DistributionSummary.builder("retrieved.measurements.values")
                             .publishPercentiles(.25, .5, .75)
+                            .minimumExpectedValue(300)
+                            .maximumExpectedValue(1250)
                             .register(registry)
+                            .record(measurement.sievert.toDouble())
                 }
                 .also { measurement ->
 
