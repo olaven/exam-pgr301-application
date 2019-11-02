@@ -2,6 +2,7 @@ package org.devops.exam.controller
 
 import com.github.javafaker.Faker
 import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.Tag
 import org.devops.exam.dto.DeviceDTO
 import org.devops.exam.entity.DeviceEntity
 import org.devops.exam.repository.DeviceRepository
@@ -45,7 +46,7 @@ class DeviceController(
             .map { DeviceDTO(it.name, it.id) }
             .also {
 
-                registry.gauge("retrieved.devices.count", it.count())
+                registry.gaugeCollectionSize("retrieved.measurements.count", listOf(Tag.of("type", "collection")), it)
                 logger.debug("Current device count: ${it.count()}")
                 logger.info("User requests devices")
             }
