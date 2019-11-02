@@ -42,7 +42,7 @@ Infrastructure may be found [here](https://github.com/lagasild/infrastructure).
 - [X] Oppgave 3 - Pipeline
     - [X] Implementer infrastruktur for varsling ved hjelp av SAAS tjenesten OpsGenie
     - [X] Implementer infrastruktur for overvåkning ved hjelp av SAAS tjenesten StatusCake
-- [ ] Oppgave 4 - Pipeline
+- [X] Oppgave 4 - Pipeline
      - [X] logge datapunkter ved hjelp av rammeverket Micrometer
      - [X] Minimun 
         - [X] Gauge
@@ -60,7 +60,7 @@ Infrastructure may be found [here](https://github.com/lagasild/infrastructure).
     på en slik måte at logger sendes til denne tjenesten. Spring boot applikasjonen
      må modifiseres slik at loggene sendes til tjenesten.
 - [X] Sjekk alle TODOs 
-- [ ] Ga gjennom alt 
+- [X] Ga gjennom alt 
       
 
 ## Notes 
