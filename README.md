@@ -15,8 +15,6 @@ Infrastructure may be found [here](https://github.com/lagasild/infrastructure).
 * `travis encrypt HEROKU_APP_NAME=<your_app_name> --add`
 * `travis encrypt $(heroku auth:token) --add deploy.api_key`
 
-## Travis setup 
-
 ## Checklist 
 - [X] Endpoints 
     - [X] Posting device 
@@ -62,10 +60,3 @@ Infrastructure may be found [here](https://github.com/lagasild/infrastructure).
 - [X] Sjekk alle TODOs 
 - [X] Ga gjennom alt 
       
-
-## Notes 
-* [Maintail two github accounts](https://medium.com/the-andela-way/a-practical-guide-to-managing-multiple-github-accounts-8e7970c8fd46)
-* When cloning, use SSH: `git clone git@github.com-devops:lagasild/REPO`
-* Mail: lagasild@protonmail.com
-* Docker username: lagasild
-* Heroku username: mail
