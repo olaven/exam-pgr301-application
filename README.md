@@ -5,7 +5,13 @@
 Application repository for exam in "DevOps in the Cloud" at Kristiania University College. 
 Infrastructure may be found [here](https://github.com/lagasild/infrastructure). 
 
+## About
+This exam was initially written under a pseudonym account, @lagasild.
+As the exam is over and grading is done, I have transferred the repository
+to my own account. In addition, I have changed the commit author to myself.
+
 ## Setup
+
 ## Local  
 * Start influx locally,`./scripts/start_influx.sh`
 * Set Spring Boot profile to `local` in IDE
